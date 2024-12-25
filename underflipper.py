@@ -11,7 +11,7 @@ PIXEL_PER_PT = DPI / PT_PER_INCH
 
 # Every coordinate constant is in points (pt)
 
-# Warscroll postition on original PDF
+# Warscroll position on original PDF
 UPPER_SCROLL_X0 = 87.8
 UPPER_SCROLL_Y0 = 79.5
 UPPER_SCROLL_X1 = 507.5
@@ -21,11 +21,11 @@ SCROLL_Y_OFFSET = 450.3 - UPPER_SCROLL_Y0  # 450
 SCROLL_WIDTH = UPPER_SCROLL_X1 - UPPER_SCROLL_X0
 SCROLL_HEIGHT = UPPER_SCROLL_Y1 - UPPER_SCROLL_Y0
 
-# Unit card positions and size onm the original page
+# Unit card positions and size on the original page
 CARD_WIDTH = 214.7 - 36
 CARD_HEIGHT = 285.5 - 36
 
-# The X positions are only used as a reference point for edge detection
+# The X positions are only used as reference points for edge detection
 # The Y positions seem to be consistent at least
 UPPER_CARD_X0 = [36, 233.5, 429.8, 627.2]
 UPPER_CARD_Y0 = 36
@@ -35,11 +35,11 @@ UPPER_CARD_X1 = [UPPER_CARD_X0[0]+CARD_WIDTH,
                  UPPER_CARD_X0[3]+CARD_WIDTH]
 UPPER_CARD_Y1 = UPPER_CARD_Y0 + CARD_HEIGHT
 
-CARD_Y_OFFSET = 309.8 - UPPER_CARD_Y0  # 308
+CARD_Y_OFFSET = 309.8 - UPPER_CARD_Y0
 
 # Sample position for edge detection
 SAMPLE_OFFSET_X = 6  # +/- from the X0 position
-SAMPLE_OFFSET_Y = 100  # Somewhere on the top row
+SAMPLE_OFFSET_Y = 100  # Somewhere in the top row
 
 # Minimum pixel value change for edge detection
 EDGE_DETECT_THRESHOLD = 40
@@ -69,7 +69,7 @@ def enable_aa():
 
 def check_card(page):
     """Detect card x positions on the page
-    Returns the x coordinate of the leading edge of detected cards"""
+    Returns the x coordinates of the leading edge of detected cards"""
     # Disable AA to simplify edge detection
     disable_aa()
     pixmap = page.get_pixmap(dpi=600)
@@ -97,7 +97,7 @@ def check_card(page):
 
 
 def reverse_portrait(front):
-    """Returns rectangle which aligns with the original on the flip side
+    """Returns the rectangle which aligns with the original on the flip side
     for portrait A4"""
     return Rect(A4_SHORT_EDGE - front.x1,
                 front.y0 - FLIP_OFFSET,
@@ -106,8 +106,8 @@ def reverse_portrait(front):
 
 
 def reverse_landscape(front):
-    """Returns rectangle which aligns with the original on the flip side
-    for landscape A4 page when printed on portrait media.
+    """Returns the rectangle which aligns with the original on the flip side
+    for landscape A4 when printed on portrait media.
     This also requires rotating the flip side image 180 degrees"""
     return Rect(front.x0 + FLIP_OFFSET,
                 A4_SHORT_EDGE - front.y1,
@@ -154,8 +154,6 @@ def process_cards():
         print("Checking for cards on page ", input_page_idx + 1)
         card_pos.append(check_card(input_document[input_page_idx]))
 
-    # There are no current warbands with more than 8 cards,
-    # so the batching logic is untested
     for batch in range(0, math.ceil(len(card_pos) / 2)):
         process_eight(1 + batch * 2,
                       card_pos[batch * 2:(batch + 1) * 2],
@@ -174,8 +172,8 @@ def process_eight(page_idx, card_pos, is_front):
         page_offset = card_no // 4
         card_x_pos = card_no % 4
         card_y_pos = 0 if is_front else 1
-        if (len(card_pos) - 1) < page_offset or (
-                len(card_pos[page_offset]) - 1) < card_x_pos:
+        if ((len(card_pos) - 1) < page_offset
+                or len(card_pos[page_offset]) - 1) < card_x_pos:
             return
         source_rect = Rect(card_pos[page_offset][card_x_pos],
                            UPPER_CARD_Y0 + card_y_pos * CARD_Y_OFFSET,
@@ -192,12 +190,8 @@ def process_eight(page_idx, card_pos, is_front):
         if not is_front:
             output_rect = reverse_landscape(output_rect)
         print(
-            "Processing ",
-            "front" if is_front else "back",
-            " of card ",
-            card_x_pos + 1,
-            " on page",
-            page_idx + 1 + page_offset)
+            "Processing ", "front" if is_front else "back", " of card ",
+            card_x_pos + 1, " on page", page_idx + 1 + page_offset)
         output_page .show_pdf_page(
             output_rect,
             input_document,
@@ -210,7 +204,7 @@ def process_eight(page_idx, card_pos, is_front):
 if len(sys.argv) < 3 or len(sys.argv) > 4:
     print("specify source and destination filename, and an optional vertical \
     offset in points (1/72th of and inch) for the reverse side")
-    exit(-1)
+    sys.exit(-1)
 
 input_filename = sys.argv[1]
 output_filename = sys.argv[2]
