@@ -5,7 +5,7 @@ a format that is fit for printing as a two-sided document ready for cutting and 
 
 # Prerequisites
 
-To run Underflipper, you need a recent Python 3 environment.
+To run Underflipper, you need Python 3.9 or later.
 
 ##  Linux
 
@@ -36,7 +36,7 @@ otherwise download the [ZIP archive](https://github.com/stoty/underflipper/archi
 
 ### (Optional) Create a virtual environment
 
-Use your preferred method to create a virtual environment.
+Use your preferred method to create a virtual python environment.
 If you don't know what that it, it is safe to skip this step.
 
 ### Install dependencies
@@ -56,7 +56,7 @@ Open a terminal (Command Prompt or Powershell on windows), and run the script.
 The first argument is the path to the original warband rules PDF, the second is the the path where the reformatted PDF will be created.
 For simplicity, you may copy the PDF to the script directory, to avoid having to specify the full path names:
 
-		python3 underflipper.py whuw_warband_sepulchral_guard_cards_download_eng_11-xax8ny92p9.pdf sepulchral_twosided.pdf
+		python underflipper.py whuw_warband_sepulchral_guard_cards_download_eng_11-xax8ny92p9.pdf sepulchral_twosided.pdf
 
 The resulting PDF should be printed in two sided mode (flip on long edge).
 Enable automatic rotation, and disable page resizing when printing.
@@ -64,7 +64,7 @@ For printers without automatic duplex printing, the driver usually provides an o
 
 ## Calibrating the vertical offset
 
-Some printers do not position the print area exactly, and which is not issue in most cases, but may cause the
+Some printers do not position the print area exactly, which is not issue in most cases, but may cause the
 two sides of the cards to not match up. A third option can be specified to correct for this skew.
 
 Print the two-sided PDF on plain paper, then hold the paper towards a light source, and check if the prints on
@@ -77,7 +77,7 @@ If necessary, iterate until the two sides of the prints cover each other perfect
 
 The following example shows how to compensate for the back side being skewed 1.5mm (4.25pt) towards the bottom:
 
-		python3 underflipper.py whuw_warband_sepulchral_guard_cards_download_eng_11-xax8ny92p9.pdf sepulchral_twosided.pdf -4.25
+		python underflipper.py whuw_warband_sepulchral_guard_cards_download_eng_11-xax8ny92p9.pdf sepulchral_twosided.pdf -4.25
 
 ## Printing
 

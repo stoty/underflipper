@@ -224,8 +224,7 @@ output_document = pymupdf.Document(filetype=".pdf")
 process_warscroll()
 process_cards()
 
-with open(output_filename, "wb") as output_file:
-    output_document.save(
-        output_file, 3, clean=True, deflate=True, deflate_images=True)
+output_document.ez_save(
+    output_filename)
 print("Wrote ", output_filename)
 print("Done")
