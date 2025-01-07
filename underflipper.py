@@ -173,7 +173,7 @@ def process_eight(page_idx, card_pos, is_front):
         card_x_pos = card_no % 4
         card_y_pos = 0 if is_front else 1
         if ((len(card_pos) - 1) < page_offset
-                or len(card_pos[page_offset]) - 1) < card_x_pos:
+                or len(card_pos[page_offset]) - 1 < card_x_pos):
             return
         source_rect = Rect(card_pos[page_offset][card_x_pos],
                            UPPER_CARD_Y0 + card_y_pos * CARD_Y_OFFSET,
